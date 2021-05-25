@@ -17,6 +17,10 @@ ENV USERNAME="" PASSWORD=""
 # Expose the dashboard to Docker
 EXPOSE 6052
 
+# Use a non priviledged user
+RUN groupadd -r esp && useradd -r -g esp esp && chown -R esp:esp /config 
+USER esp
+
 # Run healthcheck (heartbeat)
 HEALTHCHECK --interval=30s --timeout=30s \
   CMD curl --fail http://localhost:6052 || exit 1
